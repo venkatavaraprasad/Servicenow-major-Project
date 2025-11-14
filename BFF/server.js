@@ -23,7 +23,7 @@ const SN_INTANCE = process.env.SN_INTANCE;
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
-// Validate environment variables
+
 if (!SN_INTANCE || !CLIENT_ID || !CLIENT_SECRET || !REDIRECT_URI) {
   console.error("ERROR: Missing required environment variables!");
   console.error("Required: SN_INTANCE, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI");
@@ -175,6 +175,66 @@ app.get("/api/incidents", async (req, res) => {
     return res.status(e.response?.status || 500).send("Upstream error");
   }
 });
+app.get("/api/incidents/:sys_id", async (req, res) => {
+  const { sys_id } = req.params;
+  const sid = req.cookies.sid;
+  const session = tokenStore.get(sid);
+
+  if (!session || !session.access_token) {
+    console.error("401 Error: No session or access token.");
+    return res.status(401).send("Not authenticated");
+  }
+
+  // Build SNOW query
+  const url = `${SN_INTANCE}/api/now/table/incident` +
+    `?sysparm_fields=number,assignment_group,state,impact,work_notes_list,priority,assigned_to,urgency,short_description,description` +
+    `&sysparm_limit=1` +
+    `&sysparm_query=sys_id=${sys_id}`;
+
+  try {
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    });
+
+    return res.json({ result: response.data.result[0] || null });
+
+  } catch (e) {
+    console.error("API Error (single incident):", {
+      status: e.response?.status,
+      message: e.response?.data || e.message,
+      url,
+    });
+
+    // 🔁 Handle Token Refresh if needed
+    if (e.response?.status === 401 && session.refresh_token) {
+      const data = {
+        grant_type: "refresh_token",
+        refresh_token: session.refresh_token,
+        client_id: CLIENT_ID,
+      };
+
+      try {
+        const refresh = await axios.post(tokenEndpoint, stringify(data), {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        });
+
+        tokenStore.set(sid, { ...session, ...refresh.data });
+
+        const retry = await axios.get(url, {
+          headers: { Authorization: `Bearer ${refresh.data.access_token}` },
+        });
+
+        return res.json({ result: retry.data.result[0] || null });
+
+      } catch (refreshError) {
+        return res.status(401).send("Session Expired");
+      }
+    }
+
+    return res.status(e.response?.status || 500).send("Upstream error");
+  }
+});
+
 app.delete("/api/incidents/:sys_id", async (req, res) => {
   const sid = req.cookies.sid;
   const session = tokenStore.get(sid);

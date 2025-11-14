@@ -3,6 +3,7 @@ import { Link, Routes, Route, Outlet } from "react-router-dom";
 import Home from "./Home.jsx";
 import About from "./About.jsx";
 import NotFound from "./NotFound.jsx";
+import IncidentForm from "./IncientForm.jsx";   
 import styles from "./App.module.css";
 import { AuthContext } from "./AuthProvider.jsx";
 import { useContext } from "react";
@@ -19,11 +20,11 @@ function App() {
       <>
         <AppBar 
           position="static" 
-          sx={{ 
-            paddingX:2,
-          }}
+          sx={{ paddingX:2 }}
         >
-          <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Toolbar 
+            sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+          >
             
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
               Revature
@@ -38,9 +39,7 @@ function App() {
                   <Link className={styles.link} to="/about">
                     About
                   </Link>
-                  <Link className={styles.link} to="/does-not-exist">
-                    404 Test
-                  </Link>
+                  
                   <Link 
                     className={styles.link} 
                     to="#" 
@@ -67,7 +66,9 @@ function App() {
 
           </Toolbar>
        </AppBar>
-  <Container sx={{ mt:5 }}>
+
+        {/* Main Content Wrapper */}
+        <Container sx={{ mt: 5 }}>
           <Outlet />
         </Container>
       </>
@@ -78,9 +79,13 @@ function App() {
     <>
       <Routes>
         <Route element={<Layout />}>
+
+          
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/incident/:sys_id" element={<IncidentForm />} />
           <Route path="*" element={<NotFound />} />
+
         </Route>
       </Routes>
     </>

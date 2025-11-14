@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './AuthProvider.jsx'
 import { ThemeProvider, useTheme } from './ThemeContext.jsx'
 
-// Component that creates MUI theme based on dark mode
+
 function MuiThemeWrapper({ children }) {
   const { darkMode } = useTheme();
 

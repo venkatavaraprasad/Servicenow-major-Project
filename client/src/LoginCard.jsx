@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box, Card, CardContent, Typography, Button } from "@mui/material";
+import { useTheme } from "./ThemeContext";   // your dark mode context
+import { AuthContext } from "./AuthProvider.jsx"; // login context
 
-export default function LoginCard({ isLogged, handleLogin }) {
+export default function LoginCard({ isLogged }) {
+  const { darkMode } = useTheme();
+  const { login } = useContext(AuthContext);
+
   if (isLogged) return null;
 
   return (
@@ -11,17 +16,25 @@ export default function LoginCard({ isLogged, handleLogin }) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "linear-gradient(to right, #1976d2, #42a5f5)",
+
+        
+        background: darkMode
+          ? "linear-gradient(to right, #0d1117, #1e293b)" // dark mode gradient
+          : "linear-gradient(to right, #1976d2, #42a5f5)", // light mode gradient
       }}
     >
       <Card
         sx={{
           width: 380,
           borderRadius: 4,
-          boxShadow: "0px 8px 20px rgba(0,0,0,0.2)",
-          textAlign: "center",
+          boxShadow: 6,
+
+          /* 🔥 Card color respects theme automatically */
+          backgroundColor: (theme) => theme.palette.background.paper,
+          color: (theme) => theme.palette.text.primary,
+
           p: 2,
-          backgroundColor: "#fff",
+          textAlign: "center",
         }}
       >
         <CardContent>
@@ -29,10 +42,11 @@ export default function LoginCard({ isLogged, handleLogin }) {
             Welcome Back 👋
           </Typography>
 
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+          <Typography variant="body2" sx={{ mb: 3, opacity: 0.8 }}>
             Please log in to continue
           </Typography>
 
+          {/* 🔥 Login button triggers the same login() used in App.jsx */}
           <Button
             variant="contained"
             size="large"
@@ -43,9 +57,9 @@ export default function LoginCard({ isLogged, handleLogin }) {
               textTransform: "none",
               fontWeight: "bold",
             }}
-            onClick={handleLogin}
+            onClick={login}
           >
-            Log In
+            Log In with ServiceNow
           </Button>
         </CardContent>
       </Card>
