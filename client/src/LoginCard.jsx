@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Box, Card, CardContent, Typography, Button } from "@mui/material";
-import { useTheme } from "./ThemeContext";   // your dark mode context
-import { AuthContext } from "./AuthProvider.jsx"; // login context
+import { useTheme } from "./ThemeContext";   
+import { AuthContext } from "./AuthProvider.jsx"; 
 
 export default function LoginCard({ isLogged }) {
   const { darkMode } = useTheme();
@@ -19,8 +19,8 @@ export default function LoginCard({ isLogged }) {
 
         
         background: darkMode
-          ? "linear-gradient(to right, #0d1117, #1e293b)" // dark mode gradient
-          : "linear-gradient(to right, #1976d2, #42a5f5)", // light mode gradient
+          ? "linear-gradient(to right, #0d1117, #1e293b)" 
+          : "linear-gradient(to right, #1976d2, #42a5f5)", 
       }}
     >
       <Card
@@ -29,7 +29,7 @@ export default function LoginCard({ isLogged }) {
           borderRadius: 4,
           boxShadow: 6,
 
-          /* 🔥 Card color respects theme automatically */
+          
           backgroundColor: (theme) => theme.palette.background.paper,
           color: (theme) => theme.palette.text.primary,
 
@@ -46,7 +46,7 @@ export default function LoginCard({ isLogged }) {
             Please log in to continue
           </Typography>
 
-          {/* 🔥 Login button triggers the same login() used in App.jsx */}
+          
           <Button
             variant="contained"
             size="large"

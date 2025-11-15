@@ -75,12 +75,12 @@ export default function IncidentForm() {
   return (
     <Stack spacing={3} sx={{ maxWidth: 600, mx: "auto", mt: 5 }}>
 
-      {/* Title */}
+     
       <Typography variant="h4" fontWeight="bold" color="primary.main">
         Incident Form
       </Typography>
 
-      {/* Incident Number */}
+     
       <Typography variant="h6" sx={{ opacity: 0.7 }}>
         Number: {incident.number}
       </Typography>
@@ -88,7 +88,7 @@ export default function IncidentForm() {
       <Card sx={{ p: 2 }}>
         <CardContent>
 
-          {/* Impact */}
+       
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel>Impact</InputLabel>
             <Select
@@ -102,7 +102,6 @@ export default function IncidentForm() {
             </Select>
           </FormControl>
 
-          {/* Urgency */}
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel>Urgency</InputLabel>
             <Select
@@ -116,7 +115,7 @@ export default function IncidentForm() {
             </Select>
           </FormControl>
 
-          {/* Short Description */}
+          
           <TextField
             label="Short Description"
             fullWidth
@@ -127,7 +126,7 @@ export default function IncidentForm() {
             }
           />
 
-          {/* Description */}
+         
           <TextField
             label="Description"
             fullWidth
@@ -166,7 +165,7 @@ export default function IncidentForm() {
             {saving ? "Saving..." : "Save Changes"}
           </Button>
 
-          {/* Back Button */}
+         
           <Button
             variant="outlined"
             color="secondary"

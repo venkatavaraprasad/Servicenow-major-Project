@@ -58,7 +58,7 @@ function App() {
                 </Link>
               )}
               
-              {/* Dark Mode Toggle Button */}
+              
               <IconButton onClick={toggleDarkMode} color="inherit" sx={{ ml: 1 }}>
                 {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
               </IconButton>
@@ -67,7 +67,7 @@ function App() {
           </Toolbar>
        </AppBar>
 
-        {/* Main Content Wrapper */}
+        
         <Container sx={{ mt: 5 }}>
           <Outlet />
         </Container>

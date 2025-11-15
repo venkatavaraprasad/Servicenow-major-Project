@@ -128,7 +128,7 @@ app.get("/api/incidents", async (req, res) => {
   const session = tokenStore.get(sid);
 
   if (!session || !session.access_token) {
-    console.error("401 Error: No session or access token. Session exists:", !!session, "Has token:", !!session?.access_token);
+    
     return res.status(401).send("Not authenticated");
   }
 
@@ -181,11 +181,10 @@ app.get("/api/incidents/:sys_id", async (req, res) => {
   const session = tokenStore.get(sid);
 
   if (!session || !session.access_token) {
-    console.error("401 Error: No session or access token.");
+    
     return res.status(401).send("Not authenticated");
   }
 
-  // Build SNOW query
   const url = `${SN_INTANCE}/api/now/table/incident` +
     `?sysparm_fields=number,assignment_group,state,impact,work_notes_list,priority,assigned_to,urgency,short_description,description` +
     `&sysparm_limit=1` +
@@ -205,7 +204,7 @@ app.get("/api/incidents/:sys_id", async (req, res) => {
       url,
     });
 
-    // 🔁 Handle Token Refresh if needed
+    
     if (e.response?.status === 401 && session.refresh_token) {
       const data = {
         grant_type: "refresh_token",
@@ -294,7 +293,7 @@ app.delete("/api/incidents/:sys_id", async (req, res) => {
 
 
 
-//   const session = tokenStore.get(sid);
+
 
 //   if (!session || !session.access_token) {
 //     return res.status(401).send("Not authenticated");
